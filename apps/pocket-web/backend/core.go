@@ -330,6 +330,8 @@ type Server struct {
 	mux            *http.ServeMux
 	engine         BrowserEngine
 	downloadClient DownloadCenterClient
+	apps           PJAppRegistry
+	launch         AppLaunchAPI
 	views          map[string]BrowserView
 	mu             sync.Mutex
 	private        bool
@@ -340,7 +342,7 @@ type Server struct {
 }
 
 func NewServer(db *sql.DB, engine BrowserEngine, dir string) *Server {
-	server := &Server{db: db, engine: engine, downloadClient: NewDownloadCenterFromEnv(), dataDir: dir, views: map[string]BrowserView{}, oauth: map[string]oauthState{}}
+	server := &Server{db: db, engine: engine, downloadClient: NewDownloadCenterFromEnv(), apps: DefaultPJAppRegistry{Apps: DefaultApps, Launch: ExecAppLaunchAPI{}}, launch: ExecAppLaunchAPI{}, dataDir: dir, views: map[string]BrowserView{}, oauth: map[string]oauthState{}}
 	server.mux = http.NewServeMux()
 	server.routes()
 	if key, err := LoadCredentialKey(dir); err == nil {
@@ -408,6 +410,7 @@ func (s *Server) routes() {
 	s.mux.HandleFunc("/api/oauth/", s.oauthRoute)
 	s.mux.HandleFunc("/api/auth/mock", s.mockAuth)
 	s.mux.HandleFunc("/api/apps/actions", s.actions)
+	s.mux.HandleFunc("/api/apps/launch", s.launchAction)
 	s.mux.Handle("/", s.staticHandler(os.Getenv("POCKET_WEB_UI")))
 }
 func jsonOut(w http.ResponseWriter, n int, v any) {

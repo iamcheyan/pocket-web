@@ -73,4 +73,5 @@ export const api = {
   folders: async () => list<Entity>(await request<unknown>('/bookmark-folders')),
   createFolder: (name: string) => request<Entity>('/bookmark-folders', { method: 'POST', body: JSON.stringify({ name }) }),
   appActions: (url: string) => request<unknown>(`/apps/actions?url=${encodeURIComponent(url)}`),
+  launchApp: (app: string, url: string) => request<unknown>('/apps/launch', { method: 'POST', body: JSON.stringify({ app, url }) }),
 };

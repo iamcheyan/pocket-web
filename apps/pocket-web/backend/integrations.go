@@ -170,6 +170,30 @@ func (s *Server) mockAuth(w http.ResponseWriter, r *http.Request) {
 	jsonOut(w, 201, map[string]string{"id": id, "provider": x.Provider, "email": x.Email, "createdAt": now, "mode": "mock"})
 }
 func (s *Server) actions(w http.ResponseWriter, r *http.Request) {
-	u := r.URL.Query().Get("url")
-	jsonOut(w, 200, []map[string]any{{"id": "pocket-reader", "label": "Save to Pocket Reader", "available": false, "url": u, "reason": "app registry unavailable"}, {"id": "pocket-video", "label": "Download with Pocket Video", "available": false, "url": u, "reason": "app registry unavailable"}, {"id": "pocket-music", "label": "Download Audio with Pocket Music", "available": false, "url": u, "reason": "app registry unavailable"}, {"id": "gamehub", "label": "Open Game ROM Link with GameHub", "available": false, "url": u, "reason": "app registry unavailable"}})
+	target := r.URL.Query().Get("url")
+	if target == "" {
+		fail(w, 400, "invalid_url", "url query parameter required")
+		return
+	}
+	jsonOut(w, 200, s.apps.Actions(r.Context(), target))
+}
+
+func (s *Server) launchAction(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		fail(w, 405, "method_not_allowed", "POST required")
+		return
+	}
+	var input struct {
+		App string `json:"app"`
+		URL string `json:"url"`
+	}
+	if decode(r, &input) != nil || input.App == "" || input.URL == "" {
+		fail(w, 400, "invalid_json", "app and url required")
+		return
+	}
+	if err := s.launch.Launch(r.Context(), input.App, input.URL); err != nil {
+		fail(w, 503, "app_unavailable", err.Error())
+		return
+	}
+	jsonOut(w, 202, map[string]string{"status": "launched", "app": input.App})
 }

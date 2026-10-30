@@ -47,6 +47,9 @@ func TestCredentialStoreEncryptsAndAPIExposesNoPlaintext(t *testing.T) {
 	if err := s.db.QueryRow(`SELECT id FROM accounts WHERE email='user@example.test'`).Scan(&accountID); err != nil {
 		t.Fatal(err)
 	}
+	if s.key == nil || len(s.key) != 32 {
+		t.Fatal("test server has no credential key")
+	}
 	var ciphertext string
 	if err := s.db.QueryRow(`SELECT ciphertext FROM oauth_tokens WHERE account_id=?`, accountID).Scan(&ciphertext); err != nil {
 		t.Fatal(err)
