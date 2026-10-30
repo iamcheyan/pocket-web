@@ -34,6 +34,7 @@ export const api = {
   closeTab: (id: string) => request<void>(`/tabs/${encodeURIComponent(id)}`, { method: 'DELETE' }),
   reorderTabs: (ids: string[]) => request<unknown>('/tabs/order', { method: 'PUT', body: JSON.stringify({ ids }) }),
   restoreClosed: () => request<Entity>('/tabs/restore-closed', { method: 'POST', body: '{}' }),
+  restorePreviousSession: () => request<Entity[]>('/sessions/restore-previous', { method: 'POST', body: '{}' }),
   screenshotURL: (id: string) => `${base}/api/tabs/${encodeURIComponent(id)}/screenshot`,
   screenshot: async (id: string): Promise<string | null> => {
     const response = await fetch(api.screenshotURL(id));
