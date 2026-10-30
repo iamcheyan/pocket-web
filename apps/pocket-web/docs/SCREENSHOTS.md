@@ -7,13 +7,18 @@ All images under `screenshots/` were captured from the running Pocket Web React 
 From `apps/pocket-web`, with webd running and the built UI:
 
 ```sh
-./capture-screenshots.sh
+# webd must have a working headless engine, and a fixture server must be up
+CHROMIUM_BIN=/usr/bin/google-chrome POCKET_WEB_UI=$PWD/frontend/dist \
+  POCKET_WEB_ADDR=127.0.0.1:8088 go run ./backend &
+(cd frontend/fixtures && python3 -m http.server 4174 --bind 127.0.0.1) &
+
+CHROME_BIN=/usr/bin/google-chrome ./capture-screenshots.sh
 ```
 
 The script uses:
 
 ```sh
-DISPLAY=:99 chromium --headless=new --no-sandbox --disable-gpu \
+DISPLAY=:99 "$CHROME" --headless=new --no-sandbox --disable-gpu \
   --window-size=WIDTH,HEIGHT --hide-scrollbars --virtual-time-budget=3000 \
   --screenshot=docs/screenshots/NAME.png \
   'http://127.0.0.1:8088/?page=…&theme=…&profile=…&viewport=…&dpi=1x'

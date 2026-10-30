@@ -4,6 +4,8 @@ cd "$(dirname "$0")"
 BASE_URL="${BASE_URL:-http://127.0.0.1:8088}"
 ENGINE_QUERY="&activeTab=$(curl -fsS "$BASE_URL/api/tabs" | python3 -c 'import json,sys; tabs=json.load(sys.stdin); print(next(t["id"] for t in reversed(tabs) if t.get("url","").startswith("http://127.0.0.1:4174")))')"
 DISPLAY_NUM="${DISPLAY_NUM:-:99}"
+CHROME="${CHROME_BIN:-$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)}"
+if [ -z "$CHROME" ]; then echo "no Chrome/Chromium binary found; set CHROME_BIN" >&2; exit 1; fi
 DEST="docs/screenshots"
 mkdir -p "$DEST"
 rm -f "$DEST"/*.png
@@ -12,7 +14,7 @@ capture() {
   name="$1"
   size="$2"
   url="$3"
-  DISPLAY="$DISPLAY_NUM" chromium --headless=new --no-sandbox --disable-gpu \
+  DISPLAY="$DISPLAY_NUM" "$CHROME" --headless=new --no-sandbox --disable-gpu \
     --window-size="$size" --hide-scrollbars --virtual-time-budget=6000 \
     --screenshot="$PWD/$DEST/$name.png" "$BASE_URL$url"
 }

@@ -11,7 +11,7 @@ make build
 make dev
 ```
 
-`make dev` builds the React bundle and starts **webd on `http://127.0.0.1:8088`**, serving both the UI and REST API from one origin. Set `POCKET_WEB_DATA` to choose storage; `POCKET_WEB_ADDR` changes the listen address; `POCKET_WEB_UI` can point at a different built UI directory.
+`make dev` builds the React bundle and starts **webd on `http://127.0.0.1:8088`**, serving both the UI and REST API from one origin. Set `POCKET_WEB_DATA` to choose storage; `POCKET_WEB_ADDR` changes the listen address; `POCKET_WEB_UI` can point at a different built UI directory. The headless engine adapter resolves its binary from `CHROMIUM_BIN` (for example `CHROMIUM_BIN=/usr/bin/google-chrome` on Debian); without it `/api/health` reports `engine.available:false`.
 
 For frontend hot reload, run `cd frontend && npm run dev` with webd running separately. Localhost development origins receive CORS headers.
 
