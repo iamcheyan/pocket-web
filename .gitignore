@@ -1,5 +1,6 @@
-node_modules/
-dist/
+apps/pocket-web/backend/backend
+apps/pocket-web/frontend/node_modules/
+apps/pocket-web/frontend/dist/
 *.db
 *.db-shm
 *.db-wal
