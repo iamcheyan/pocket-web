@@ -1,5 +1,12 @@
 # pocket-web
 
+
+> **PocketJS port (product target):** `apps/pocket-web/pocket/` is the
+> native PocketJS program (Solid TSX → `.pocket` → `pocket-linux-kms`). The
+> `frontend/` tree remains the frozen React design reference and is not
+> extended. Frames: `docs/pocket/`; verification:
+> `apps/pocket-web/POCKETJS-VERIFICATION.md`.
+
 Pocket Web — a lightweight browser shell for PJOS / small-screen devices. React UI served by
 the Go `webd` service, which owns tabs, history, bookmarks, reading list, sessions, OAuth state
 and the optional Chromium-headless engine adapter.
