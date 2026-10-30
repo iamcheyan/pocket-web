@@ -1,8 +1,8 @@
 # Verification — pocket-web @ 2026-10-31
 
 - Verdict: PASS
-- Commit: `__COMMIT__` (fixes + screenshots; this document is the following commit)
-- Remote: `__REMOTE__`
+- Commit: `aa58e07bfc2fde7eb9dc306c4af7c0b7bdc766c8` (fixes + screenshots; this document is the following commit)
+- Remote: `aa58e07bfc2fde7eb9dc306c4af7c0b7bdc766c8`
 - Runtime: `webd` on `http://127.0.0.1:8088` serving the built UI + REST API, `CHROMIUM_BIN=/usr/bin/google-chrome`, fixture page on `127.0.0.1:4174`; production bundle from `make build`
 - Toolchain: go 1.26.0, bun 1.4.4, node v22.23.3, Chrome 155.0.8059.84
 
