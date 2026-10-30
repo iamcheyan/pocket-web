@@ -17,6 +17,7 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"syscall"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -91,6 +92,7 @@ func (e *ChromiumHeadlessAdapter) NewView(ctx context.Context, _ string, _ ViewO
 		return nil, err
 	}
 	cmd := exec.Command(e.binary(), "--headless=new", "--no-sandbox", "--disable-gpu", "--remote-debugging-address=127.0.0.1", "--remote-debugging-port=0", "--user-data-dir="+p, "about:blank")
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	if err = cmd.Start(); err != nil {
 		_ = os.RemoveAll(p)
 		return nil, err
@@ -310,7 +312,7 @@ func (v *chromiumView) Close() error {
 	}
 	v.failPending(errors.New("Chromium view closed"))
 	if v.cmd.Process != nil {
-		_ = v.cmd.Process.Kill()
+		_ = syscall.Kill(-v.cmd.Process.Pid, syscall.SIGKILL)
 	}
 	select {
 	case <-v.waitDone:

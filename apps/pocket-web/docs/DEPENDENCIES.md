@@ -22,7 +22,7 @@
 
 ## Browser engine reality
 
-`ChromiumHeadlessAdapter` launches `chromium --headless=new` per tab with an isolated `--user-data-dir` and talks CDP over the DevTools WebSocket. Navigation, reload, history navigation, title/URL retrieval, and lifecycle cleanup are implemented. A real localhost page was loaded and its title and history visit were observed. This is **not** WebKitGTK/CEF integration and is not a native GUI browser. No WebKitGTK adapter is claimed.
+`ChromiumHeadlessAdapter` launches `chromium --headless=new` per tab with an isolated `--user-data-dir` and talks CDP over the DevTools WebSocket. Navigation, reload, history navigation, title/URL retrieval, engine screenshots, and lifecycle cleanup are implemented. Each Chromium process is started in its own process group; close sends SIGKILL to the group and removes the temporary profile. A regression test verifies no child process or profile survives. A real localhost page was loaded and its title and history visit were observed. This is **not** WebKitGTK/CEF integration and is not a native GUI browser. No WebKitGTK adapter is claimed.
 
 External public web pages could not be reached during verification because DNS resolution failed. A localhost HTTP page was used to prove CDP page loading. The UI/screenshots report this engine and its fallback status rather than pretending a native engine.
 
