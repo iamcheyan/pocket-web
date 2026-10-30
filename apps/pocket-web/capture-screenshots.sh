@@ -2,7 +2,7 @@
 set -eu
 cd "$(dirname "$0")"
 BASE_URL="${BASE_URL:-http://127.0.0.1:8088}"
-ENGINE_QUERY="&activeTab=$(curl -fsS "$BASE_URL/api/tabs" | python3 -c 'import json,sys; tabs=json.load(sys.stdin); print(next(t["id"] for t in tabs if t.get("url","").startswith("http://127.0.0.1:4174")))')"
+ENGINE_QUERY="&activeTab=$(curl -fsS "$BASE_URL/api/tabs" | python3 -c 'import json,sys; tabs=json.load(sys.stdin); print(next(t["id"] for t in reversed(tabs) if t.get("url","").startswith("http://127.0.0.1:4174")))')"
 DISPLAY_NUM="${DISPLAY_NUM:-:99}"
 DEST="docs/screenshots"
 mkdir -p "$DEST"

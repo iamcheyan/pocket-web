@@ -9,10 +9,11 @@ setup:
 	cd $(FRONTEND) && bun install
 
 dev: build
-	POCKET_WEB_UI="$(CURDIR)/$(FRONTEND)/dist" cd $(BACKEND) && go run .
+	@echo "Starting Pocket Web at http://127.0.0.1:8088"
+	cd $(BACKEND) && POCKET_WEB_UI="$(CURDIR)/$(FRONTEND)/dist" go run .
 
 backend:
-	cd $(BACKEND) && go run .
+	cd $(BACKEND) && POCKET_WEB_UI="$(CURDIR)/$(FRONTEND)/dist" go run .
 
 frontend:
 	cd $(FRONTEND) && npm run dev
@@ -23,7 +24,7 @@ test:
 	cd $(FRONTEND) && ./node_modules/typescript/bin/tsc --noEmit
 
 build:
-	cd $(BACKEND) && go build ./...
+	cd $(BACKEND) && go build -o backend ./...
 	cd $(FRONTEND) && ./node_modules/typescript/bin/tsc --noEmit
 	cd $(FRONTEND) && bun build.mjs
 
@@ -34,4 +35,4 @@ screenshots:
 	./capture-screenshots.sh
 
 clean:
-	rm -rf $(FRONTEND)/dist $(BACKEND)/pocket-web
+	rm -rf $(FRONTEND)/dist $(BACKEND)/backend
