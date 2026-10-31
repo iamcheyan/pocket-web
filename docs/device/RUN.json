@@ -1,0 +1,16 @@
+{
+  "app": "web",
+  "package_sha256": "0cff02ac0f82aeaf59b319f24d4807f281d78d4a55453301e5899936da898b1f",
+  "launcher_before": "13799",
+  "launcher_after": "14184",
+  "boot_sha256": "6ed41612bce1723d1eda64b5a0ee9333a105ed498b7085c03267539cf6c1b32d",
+  "frames": [
+    "home",
+    "home-focus",
+    "detail",
+    "settings",
+    "settings-toggled"
+  ],
+  "runtime": "/mnt/sdcard/System/pocketjs/bin/pocket-linux-kms",
+  "deploy": "/storage/pjs/pocket-web"
+}
